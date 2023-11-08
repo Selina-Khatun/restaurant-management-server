@@ -44,6 +44,8 @@ async function run() {
         app.post('/purchased',async(req,res)=>{
             const purchaseItem=req.body;
             console.log(purchaseItem);
+            const result=await purchaseCollection.insertOne(purchaseItem);
+            res.send(result);
         })
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
