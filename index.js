@@ -32,6 +32,7 @@ async function run() {
         const foodCollection = client.db('restaurantManagement').collection('foods');
         const purchaseCollection = client.db('restaurantManagement').collection('purchase');
         const userCollection = client.db('restaurantManagement').collection('user');
+        const myItemCollection = client.db('restaurantManagement').collection('myItem');
 
         // foodCollection
         app.get('/foods', async (req, res) => {
@@ -63,12 +64,13 @@ async function run() {
 
         })
 
-        app.delete('/purchased/:id',async(req,res)=>{
-            const id=req.params.id;
-            const query={_id:new ObjectId(id)};
-            const result=await purchaseCollection.deleteOne(query);
+        app.delete('/purchased/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await purchaseCollection.deleteOne(query);
             res.send(result);
         })
+
         // userCollection
         app.post('/users', async (req, res) => {
             const userinfo = req.body;
@@ -76,7 +78,15 @@ async function run() {
             const result = await userCollection.insertOne(userinfo);
             res.send(result);
         })
-        
+
+        // myItemCollection
+        app.post('/myItems', async (req, res) => {
+            const newProduct = req.body;
+            console.log(newProduct);
+            const result = await myItemCollection.insertOne(newProduct);
+            res.send(result);
+        });
+
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
